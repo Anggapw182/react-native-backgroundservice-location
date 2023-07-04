@@ -1,16 +1,13 @@
 import * as React from 'react';
 
-import { StyleSheet, View, Text, Button } from 'react-native';
+import { StyleSheet, View, Button } from 'react-native';
 import { startLocationUpdates, stopLocationUpdates, getLocatino } from 'react-native-backgroundservice-location';
 
 export default function App() {
-  const [result, setResult] = React.useState<number | undefined>();
-
-  // React.useEffect(() => {
-  //   multiply(3, 7).then(setResult);
-  // }, []);
-
-  getLocatino();
+ 
+  getLocatino().addListener('onLocationUpdate', locationMap => {
+    console.log('Received :', locationMap);
+  })
 
   return (
     <View style={styles.container}>
