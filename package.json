@@ -39,7 +39,12 @@
   "keywords": [
     "react-native",
     "ios",
-    "android"
+    "android",
+    "location",
+    "react-component",
+    "geolocation",
+    "react-native-backgroundservice-location",
+    "backgroundservice"
   ],
   "repository": "https://github.com/Anggapw182/react-native-backgroundservice-location",
   "author": "Anggapw182 <anggaputra182@gmail.com> (https://www.npmjs.com/settings/anggaputra182/packages)",
