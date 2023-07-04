@@ -45,9 +45,9 @@
   "author": "Anggapw182 <anggaputra182@gmail.com> (https://www.npmjs.com/settings/anggaputra182/packages)",
   "license": "MIT",
   "bugs": {
-    "url": "https://gitlab.com/fachmihusein/mobilelibraries/issues"
+    "url": "https://github.com/Anggapw182/react-native-backgroundservice-location/issues"
   },
-  "homepage": "https://gitlab.com/fachmihusein/mobilelibraries#readme",
+  "homepage": "https://github.com/Anggapw182/react-native-backgroundservice-location#readme",
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },
