@@ -11,12 +11,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import com.backgroundservicelocation.locationservice.LocationProvider;
+
 public class BackgroundserviceLocationPackage implements ReactPackage {
   @NonNull
   @Override
   public List<NativeModule> createNativeModules(@NonNull ReactApplicationContext reactContext) {
     List<NativeModule> modules = new ArrayList<>();
-    modules.add(new BackgroundserviceLocationModule(reactContext));
+    // modules.add(new BackgroundserviceLocationModule(reactContext));
+    modules.add(new LocationProvider(reactContext));
     return modules;
   }
 
