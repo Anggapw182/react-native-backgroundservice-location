@@ -31,6 +31,19 @@ or
 ## Configuration and Permissions
 
 ### Android
+
+This package build using 
+
+- "react-native": "0.72.1"
+- BackgroundserviceLocation_kotlinVersion=1.7.0
+- BackgroundserviceLocation_minSdkVersion=21
+- BackgroundserviceLocation_targetSdkVersion=31
+- BackgroundserviceLocation_compileSdkVersion=31
+- BackgroundserviceLocation_ndkversion=21.4.7075529
+- JavaVersion.VERSION_1_8
+- gradle:7.2.1
+
+
 To request access to location, you need to add the following line to your app's  =>
   android/src/main/AndroidManifest.xml
 
