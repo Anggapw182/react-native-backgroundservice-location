@@ -4,18 +4,16 @@ import { StyleSheet, View, Button } from 'react-native';
 import {
   startLocationUpdates,
   stopLocationUpdates,
-  getLocatino,
+  getLocation,
   getUniqueId,
 } from 'react-native-backgroundservice-location';
 
 export default function App() {
-  getLocatino().addListener('onLocationUpdate', (locationMap) => {
+  getLocation().addListener('onLocationUpdate', (locationMap) => {
     console.log('Received :', locationMap);
   });
 
   const getImei = () => {
-    console.log('get uniq id');
-
     getUniqueId()
       .then((uniqueID) => {
         console.log(uniqueID);
@@ -23,8 +21,6 @@ export default function App() {
       .catch((error) => {
         console.error(error);
       });
-
-    // locationUpdateSubscription.remove();
   };
 
   return (

@@ -28,7 +28,7 @@ export function stopLocationUpdates() {
   return LocationProvider.stopLocationUpdates();
 }
 
-export function getLocatino() {
+export function getLocation() {
   return DeviceEventEmitter;
 }
 
