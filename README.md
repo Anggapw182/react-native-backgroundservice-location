@@ -60,18 +60,45 @@ To request access to location, you need to add the following line to your app's 
 import * as React from 'react';
 
 import { StyleSheet, View, Button } from 'react-native';
-import { startLocationUpdates, stopLocationUpdates, getLocatino } from 'react-native-backgroundservice-location';
+import {
+  startLocationUpdates,
+  stopLocationUpdates,
+  getLocatino,
+  getUniqueId,
+} from 'react-native-backgroundservice-location';
 
 export default function App() {
- 
-  getLocatino().addListener('onLocationUpdate', locationMap => {
+  getLocatino().addListener('onLocationUpdate', (locationMap) => {
     console.log('Received :', locationMap);
-  })
+  });
+
+  const getImei = () => {
+    getUniqueId()
+      .then((uniqueID) => {
+        console.log(uniqueID);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
 
   return (
     <View style={styles.container}>
-      <Button title="Start Location Updates" onPress={()=>startLocationUpdates(1000,null)} />
-      <Button title="Stop Location Updates" onPress={()=>stopLocationUpdates()} />
+      <Button
+        title="Start Location Updates"
+        onPress={() =>
+          startLocationUpdates(
+            15000,
+            'http://localhost:9951/api/BackgroundLocation/LocationLog',
+            'userid'
+          )
+        }
+      />
+      <Button
+        title="Stop Location Updates"
+        onPress={() => stopLocationUpdates()}
+      />
+      <Button title="Get getUniqueId" onPress={() => getImei()} />
     </View>
   );
 }
@@ -89,7 +116,6 @@ const styles = StyleSheet.create({
   },
 });
 
-
 ```
 
 Check out the [example project](https://github.com/Anggapw182/react-native-backgroundservice-location/tree/main/example) for more examples.
@@ -99,6 +125,7 @@ Check out the [example project](https://github.com/Anggapw182/react-native-backg
 - [startLocationUpdates](#startLocationUpdates)
 - [stopLocationUpdates](#stopLocationUpdates)
 - [getLocatino](#getLocatino)
+- [getUniqueId](#getUniqueId)
 
 ### Details
 
@@ -116,13 +143,15 @@ This function need two parameter :
 Methods : POST
 Body Request : 
 {
-    "lat": "STRING", 
-    "lon": "STRING",
-    "accuracy": "STRING", 
-    "androiddate": "STRING", 
+    "lat": "Double", 
+    "lon": "Double",
+    "accuracy": "Double", 
+    "androiddate": "STRING",
+    "uniqueID": "STRING"
 }
 URL : http://{yoururl}/api/BackgroundLocation/LocationLog
  ```
+Example Code from [APIS](https://github.com/Anggapw182/react-native-backgroundservice-location/tree/main/example%20api)
 
 if you don't use the default function to send data to the database then fill it with "null"
 
@@ -130,12 +159,14 @@ Example :
 
 startLocationUpdates(
       1000,
-      'http://localhost:9951/api/BackgroundLocation/LocationLog',
+      'http://localhost:9951/api/BackgroundLocation/LocationLog','userID'
     )
 
 or
 
-startLocationUpdates(1000, null);
+startLocationUpdates(1000, null, null);
+
+if the third parameter is null then it will default to string "system"
 
 #### stopLocationUpdates
 This function for stop / kill process in background service, no parameter.
@@ -161,6 +192,22 @@ Object data :
   "urlPost": null
 }
  ```
+### getUniqueId
+Gets the device unique ID 
+
+Example
+ ```
+const getImei = () => {
+    getUniqueId()
+      .then((uniqueID) => {
+        console.log(uniqueID);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+ ```
+ 
 ## Maintainers
 This module is developed and maintained by [Angga Putra](https://github.com/Anggapw182).
 
