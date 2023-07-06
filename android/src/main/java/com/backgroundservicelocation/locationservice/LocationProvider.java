@@ -24,6 +24,7 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
+import com.facebook.react.bridge.Promise;
 
 import android.content.SharedPreferences;
 import android.os.Looper;
@@ -37,6 +38,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.annotation.Nullable;
 
+//Get Imei
+import android.provider.Settings;
+import static android.provider.Settings.Secure.getString;
+
 // @ReactModule(name = LocationProvider.NAME)
 public class LocationProvider extends ReactContextBaseJavaModule {
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 100;
@@ -45,6 +50,7 @@ public class LocationProvider extends ReactContextBaseJavaModule {
     private LocationListener locationListener;
     private String urlPost = null;
     public static final String NAME = "LocationProvider";
+    private String uniqueID = getUniqueIdSync();
 
     public LocationProvider(ReactApplicationContext reactContext) {
         super(reactContext);
@@ -58,24 +64,31 @@ public class LocationProvider extends ReactContextBaseJavaModule {
     public String getName() {
         return "LocationProvider";
     }
+
+    public String getUniqueIdSync() { return getString(getReactApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID); }
     
     @ReactMethod
-    public void startLocationUpdates(int delay,@Nullable String urlPost) {
+    public void getUniqueId(Promise p) {
+        Log.d("LogImei", getUniqueIdSync());
+        p.resolve(getUniqueIdSync());
+    }
+
+    @ReactMethod
+    public void startLocationUpdates(int delay,@Nullable String urlPost, @Nullable String userid) {
         Log.d("LF", "START FRESH");
         if (ContextCompat.checkSelfPermission(reactContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // Permission not granted, request it
             ActivityCompat.requestPermissions(getCurrentActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
-            // throw new RuntimeException("Location permission not granted");
-            // return;
 
         }
-        
+
         if(ContextCompat.checkSelfPermission(reactContext, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
             Log.d("LF", "isLocationPermissionGranted TRUE");
-            // isLocationPermissionGranted = true; 
-            SharedPreferences sharedPreferences = reactContext.getSharedPreferences("urlPost", Context.MODE_PRIVATE);
+
+            SharedPreferences sharedPreferences = reactContext.getSharedPreferences("MyPref", Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putString("urlPost", urlPost);
+            editor.putString("userid", userid);
             editor.apply();
 
             this.urlPost = urlPost;
@@ -85,7 +98,7 @@ public class LocationProvider extends ReactContextBaseJavaModule {
             Log.d("LF", "isLocationPermissionGranted FALSE");
             ActivityCompat.requestPermissions(getCurrentActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
         }
-        
+
     }
 
     private void startForegroundService() {
@@ -145,19 +158,35 @@ public class LocationProvider extends ReactContextBaseJavaModule {
                     locationMap.putDouble("longitude", location.getLongitude());
                     locationMap.putDouble("accuracy", location.getAccuracy());
                     locationMap.putString("androiddate", AndroidSystemDate);
+                    locationMap.putString("uniqueID", uniqueID);
 
-                    SharedPreferences sharedpreferences = reactContext.getSharedPreferences("urlPost", Context.MODE_PRIVATE);
+                    SharedPreferences sharedpreferences = reactContext.getSharedPreferences("MyPref", Context.MODE_PRIVATE);
                     String getUrlPost = sharedpreferences.getString("urlPost", null);
-
+                    String getuserid = sharedpreferences.getString("userid", null);
+                    String createdby = "system";
                     locationMap.putString("urlPost", getUrlPost);
+                    if(getuserid == null || getuserid.isEmpty())
+                    {
+                        createdby = "system";
+                        locationMap.putString("userid", "system");
+                        Log.d("getuserid null", String.valueOf(createdby));
+                    }else{
+                        createdby = getuserid;
+                        locationMap.putString("userid", getuserid);
+                        Log.d("getuserid", createdby);
+                    }
+
                     sendLocationUpdate(locationMap);
                     if(getUrlPost != null){
                         try {
                             JSONObject jsonObject = new JSONObject();
-                            jsonObject.accumulate("lat",  String.valueOf(location.getLatitude()));
-                            jsonObject.accumulate("lon",  String.valueOf(location.getLongitude()));
-                            jsonObject.accumulate("accuracy", String.valueOf(location.getAccuracy()));
+                            jsonObject.accumulate("lat",  location.getLatitude());
+                            jsonObject.accumulate("lon",  location.getLongitude());
+                            jsonObject.accumulate("accuracy", location.getAccuracy());
                             jsonObject.accumulate("androiddate", AndroidSystemDate);
+                            jsonObject.accumulate("uniqueID", String.valueOf(uniqueID));
+                            jsonObject.accumulate("userid", String.valueOf(getuserid));
+                            jsonObject.accumulate("createdby", String.valueOf(createdby));
                             new PostLocation(new PostLocation.OnDataCollectedCallback() {
                                 @Override
                                 public void onDataCollected(String data) {

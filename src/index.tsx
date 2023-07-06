@@ -1,4 +1,4 @@
-import { NativeModules, Platform,  DeviceEventEmitter} from 'react-native';
+import { NativeModules, Platform, DeviceEventEmitter } from 'react-native';
 
 const LINKING_ERROR =
   `The package 'react-native-backgroundservice-location' doesn't seem to be linked. Make sure: \n\n` +
@@ -7,24 +7,31 @@ const LINKING_ERROR =
   '- You are not using Expo Go\n';
 
 const LocationProvider = NativeModules.LocationProvider
-? NativeModules.LocationProvider
-: new Proxy(
-    {},
-    {
-      get() {
-        throw new Error(LINKING_ERROR);
-      },
-    }
-  );
+  ? NativeModules.LocationProvider
+  : new Proxy(
+      {},
+      {
+        get() {
+          throw new Error(LINKING_ERROR);
+        },
+      }
+    );
 
-export function startLocationUpdates(a: number, b: string): Promise<number> {
-  return LocationProvider.startLocationUpdates(a, b);
+export function startLocationUpdates(a: number, b: string, c: string) {
+  return LocationProvider.startLocationUpdates(a, b, c);
 }
 
-export function stopLocationUpdates(): Promise<number> {
+// export function stopLocationUpdates(): Promise<number> {
+//   return LocationProvider.stopLocationUpdates();
+// }
+export function stopLocationUpdates() {
   return LocationProvider.stopLocationUpdates();
 }
 
 export function getLocatino() {
   return DeviceEventEmitter;
+}
+
+export function getUniqueId(): Promise<string> {
+  return LocationProvider.getUniqueId();
 }
