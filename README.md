@@ -120,7 +120,7 @@ Check out the [example project](https://github.com/Anggapw182/react-native-backg
 
 - [startLocationUpdates](#startLocationUpdates)
 - [stopLocationUpdates](#stopLocationUpdates)
-- [getLocatino](#getLocatino)
+- [getLocation](#getLocation)
 - [getUniqueId](#getUniqueId)
 
 ### Details
@@ -170,14 +170,14 @@ if the third parameter is null then it will default to string "system"
 
 This function for stop / kill process in background service, no parameter.
 
-#### getLocatino
+#### getLocation
 
 This function for get data location, provided that you have run the startLocationUpdates function.
 
 Example :
 
 ```
-getLocatino().addListener('onLocationUpdate', locationMap => {
+getLocation().addListener('onLocationUpdate', locationMap => {
     console.log('Received :', locationMap);
     // your code for process data locationMap
   })
