@@ -57,15 +57,15 @@ android/src/main/AndroidManifest.xml
 import * as React from 'react';
 
 import { StyleSheet, View, Button } from 'react-native';
-import {getLocation
+import {
   startLocationUpdates,
   stopLocationUpdates,
-  getLocatino,
   getLocation,
+  getUniqueId,
 } from 'react-native-backgroundservice-location';
 
 export default function App() {
-  getLocatino().addListener('onLocationUpdate', (locationMap) => {
+  getLocation().addListener('onLocationUpdate', (locationMap) => {
     console.log('Received :', locationMap);
   });
 
@@ -87,7 +87,7 @@ export default function App() {
           startLocationUpdates(
             15000,
             'http://localhost:9951/api/BackgroundLocation/LocationLog',
-            'userid'
+            'suep'
           )
         }
       />
@@ -95,7 +95,7 @@ export default function App() {
         title="Stop Location Updates"
         onPress={() => stopLocationUpdates()}
       />
-   getLocationtitgetLocationUniqueId" onPress={() => getImei()} />
+      <Button title="Get getUniqueId" onPress={() => getImei()} />
     </View>
   );
 }
@@ -112,7 +112,6 @@ const styles = StyleSheet.create({
     marginVertical: 20,
   },
 });
-
 ```
 
 Check out the [example project](https://github.com/Anggapw182/react-native-backgroundservice-location/tree/main/example) for more examples.
