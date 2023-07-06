@@ -1,6 +1,6 @@
 {
   "name": "react-native-backgroundservice-location",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Package for React-Native Android get location running background service",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
