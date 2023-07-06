@@ -144,7 +144,9 @@ Body Request :
     "lon": "DOUBLE",
     "accuracy": "DOUBLE",
     "androiddate": "STRING",
-    "uniqueID": "STRING"
+    "uniqueID": "STRING",
+    "userid": "STRING",
+    "createdby": "STRING"
 }
 URL : http://{yoururl}/api/BackgroundLocation/LocationLog
 ```
