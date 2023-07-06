@@ -140,9 +140,9 @@ This function need two parameter :
 MethogetLocation
 Body Request :
 {
-    "lat": "Double",
-    "lon": "Double",
-getLocationcy": "Double",
+    "lat": "DOUBLE",
+    "lon": "DOUBLE",
+    "accuracy": "DOUBLE",
     "androiddate": "STRING",
     "uniqueID": "STRING"
 }
