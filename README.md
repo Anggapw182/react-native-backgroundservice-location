@@ -87,7 +87,7 @@ export default function App() {
           startLocationUpdates(
             15000,
             'http://localhost:9951/api/BackgroundLocation/LocationLog',
-            'suep'
+            'UserID'
           )
         }
       />
@@ -166,6 +166,8 @@ or
 
 startLocationUpdates(1000, null, null);
 
+3. String value for declare userID
+   
 if the third parameter is null then it will default to string "system"
 
 #### stopLocationUpdates
